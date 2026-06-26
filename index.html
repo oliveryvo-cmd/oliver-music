@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>OLIVER — Official Artist</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#03020a;--gold:#ffcc00;--red:#ff2244;--purple:#bb33ff;--green:#00ffaa;}
+body{background:var(--bg);color:#fff;font-family:'Segoe UI',Arial,sans-serif;min-height:100vh;overflow-x:hidden;}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* HERO */
+#hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 24px;}
+.hero-eyebrow{font-size:0.42rem;letter-spacing:12px;color:#222244;margin-bottom:20px;}
+.hero-name{font-size:clamp(5rem,25vw,14rem);font-weight:900;letter-spacing:-2px;line-height:0.85;background:linear-gradient(135deg,#fff,#ffcc00,#ff2244,#bb33ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;}
+.hero-sub{font-size:0.55rem;letter-spacing:8px;color:#1a1a33;margin-bottom:8px;}
+.hero-desc{font-size:0.65rem;color:#aaaabb;line-height:2.4;max-width:400px;margin:0 auto 32px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.h-btn{padding:14px 36px;border-radius:50px;font-size:0.7rem;font-weight:900;letter-spacing:4px;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-block;}
+.h-btn-primary{background:linear-gradient(135deg,var(--gold),var(--red));color:#000;border:none;}
+.h-btn-secondary{background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.2);}
+.h-btn:hover{transform:scale(1.04);}
+.scroll-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);font-size:0.42rem;letter-spacing:4px;color:#111122;animation:bounce 2s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-6px);}}
+
+/* SECTIONS */
+section{position:relative;z-index:1;padding:60px 24px;max-width:680px;margin:0 auto;}
+.sec-eyebrow{font-size:0.42rem;letter-spacing:8px;color:#1a1a33;margin-bottom:12px;}
+.sec-title{font-size:clamp(1.5rem,7vw,3rem);font-weight:900;color:#fff;margin-bottom:20px;}
+
+/* SONG CARD */
+.song-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:24px;margin-bottom:12px;display:flex;align-items:center;gap:16px;}
+.song-art{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--red),var(--purple));display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;}
+.song-info{flex:1;}
+.song-title{font-size:0.85rem;font-weight:900;color:#fff;letter-spacing:2px;margin-bottom:3px;}
+.song-meta{font-size:0.45rem;letter-spacing:3px;color:#aaaabb;}
+.song-tag{font-size:0.38rem;letter-spacing:3px;padding:2px 10px;border-radius:50px;background:rgba(255,204,0,0.1);color:var(--gold);margin-top:6px;display:inline-block;}
+.play-btn{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--red));border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;flex-shrink:0;}
+
+/* STREAMING */
+.stream-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.stream-btn{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px;text-align:center;text-decoration:none;display:block;transition:border-color 0.2s,transform 0.2s;}
+.stream-btn:hover{border-color:rgba(255,255,255,0.15);transform:scale(1.02);}
+.sb-icon{font-size:1.8rem;margin-bottom:6px;}
+.sb-name{font-size:0.5rem;letter-spacing:3px;color:#aaaabb;}
+.sb-status{font-size:0.38rem;letter-spacing:2px;margin-top:3px;}
+
+/* ABOUT */
+.about-card{background:linear-gradient(135deg,rgba(255,204,0,0.05),rgba(187,51,255,0.05));border:1px solid rgba(255,204,0,0.1);border-radius:20px;padding:28px;}
+.about-name{font-size:clamp(1.5rem,7vw,3rem);font-weight:900;background:linear-gradient(135deg,var(--gold),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;}
+.about-body{font-size:0.62rem;color:#aaaabb;line-height:2.8;}
+.about-body strong{color:#fff;}
+.about-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+.about-tag{font-size:0.4rem;letter-spacing:3px;padding:4px 14px;border-radius:50px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#aaaabb;}
+
+/* CONTACT */
+.contact-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:24px;text-align:center;}
+.cc-title{font-size:0.52rem;letter-spacing:5px;color:var(--gold);margin-bottom:8px;}
+.cc-body{font-size:0.58rem;color:#aaaabb;line-height:2.3;margin-bottom:16px;}
+.cc-btn{display:inline-block;padding:13px 40px;background:linear-gradient(135deg,var(--gold),var(--red));border:none;border-radius:50px;font-size:0.65rem;font-weight:900;letter-spacing:4px;cursor:pointer;color:#000;font-family:inherit;text-decoration:none;}
+
+/* FOOTER */
+footer{position:relative;z-index:1;text-align:center;padding:40px 24px;border-top:1px solid rgba(255,255,255,0.05);}
+.footer-name{font-size:clamp(2rem,10vw,5rem);font-weight:900;background:linear-gradient(135deg,#fff,#ffcc00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
+.footer-sub{font-size:0.42rem;letter-spacing:5px;color:#1a1a33;}
+
+/* COMING SOON badge */
+.soon{font-size:0.38rem;letter-spacing:3px;padding:2px 10px;border-radius:50px;background:rgba(187,51,255,0.1);color:var(--purple);}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-eyebrow">PUFFBLAZE WORLD STUDIOS PRESENTS</div>
+  <div class="hero-name">OLIVER</div>
+  <div class="hero-sub">ARTIST · SONGWRITER · KID CHANGING THE WORLD</div>
+  <div class="hero-desc">Age 10. Pop artist. Builder of nations. Writer of songs that actually mean something.</div>
+  <div class="hero-btns">
+    <a class="h-btn h-btn-primary" href="#music">🎵 LISTEN NOW</a>
+    <a class="h-btn h-btn-secondary" href="#about">WHO IS OLIVER?</a>
+  </div>
+  <div class="scroll-hint">▼ SCROLL</div>
+</div>
+
+<!-- MUSIC -->
+<section id="music">
+  <div class="sec-eyebrow">DISCOGRAPHY</div>
+  <div class="sec-title">Songs</div>
+  <div class="song-card">
+    <div class="song-art">⚡</div>
+    <div class="song-info">
+      <div class="song-title">UNSTOPPABLE NOW</div>
+      <div class="song-meta">OLIVER · 2026 · POP</div>
+      <div class="song-tag">DEBUT SINGLE</div>
+    </div>
+    <button class="play-btn" onclick="playSong()">▶</button>
+  </div>
+  <div style="font-size:0.48rem;letter-spacing:3px;color:#1a1a33;padding:8px 4px;">More songs coming soon.</div>
+</section>
+
+<!-- STREAMING -->
+<section>
+  <div class="sec-eyebrow">LISTEN EVERYWHERE</div>
+  <div class="sec-title">Stream</div>
+  <div class="stream-grid">
+    <div class="stream-btn">
+      <div class="sb-icon">🎵</div>
+      <div class="sb-name">SPOTIFY</div>
+      <div class="sb-status soon">COMING SOON</div>
+    </div>
+    <div class="stream-btn">
+      <div class="sb-icon">🍎</div>
+      <div class="sb-name">APPLE MUSIC</div>
+      <div class="sb-status soon">COMING SOON</div>
+    </div>
+    <div class="stream-btn">
+      <div class="sb-icon">▶️</div>
+      <div class="sb-name">YOUTUBE MUSIC</div>
+      <div class="sb-status soon">COMING SOON</div>
+    </div>
+    <div class="stream-btn">
+      <div class="sb-icon">☁️</div>
+      <div class="sb-name">SOUNDCLOUD</div>
+      <div class="sb-status soon">COMING SOON</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-eyebrow">THE ARTIST</div>
+  <div class="sec-title">Who is Oliver?</div>
+  <div class="about-card">
+    <div class="about-name">OLIVER</div>
+    <div class="about-body">
+      Oliver is a <strong>10-year-old pop artist, songwriter, and world-builder</strong> from California.<br><br>
+      He has Tourette syndrome. He built a social network, a government, a country, and a platform for every disabled kid on earth — all before age 11.<br><br>
+      Now he's making music.<br><br>
+      His debut single <strong>"Unstoppable Now"</strong> is about the moment he told a friend with a disability: <em>"I understand — because I have one too."</em><br><br>
+      <strong>Pop. Inspiring. Real.</strong>
+    </div>
+    <div class="about-tags">
+      <span class="about-tag">POP</span>
+      <span class="about-tag">AGE 10</span>
+      <span class="about-tag">CALIFORNIA</span>
+      <span class="about-tag">TOURETTE SYNDROME</span>
+      <span class="about-tag">KIDFOREVER</span>
+      <span class="about-tag">PUFFBLAZE WORLD STUDIOS</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section>
+  <div class="sec-eyebrow">GET IN TOUCH</div>
+  <div class="sec-title">Contact</div>
+  <div class="contact-card">
+    <div class="cc-title">FOR PRESS, COLLABS & BOOKINGS</div>
+    <div class="cc-body">Oliver is represented by his parent.<br>For press inquiries, collaboration requests, or booking — reach out below.</div>
+    <a class="cc-btn" href="mailto:truongnvo@gmail.com">✉️ CONTACT</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">OLIVER</div>
+  <div class="footer-sub">© 2026 PUFFBLAZE WORLD STUDIOS · ALL RIGHTS RESERVED</div>
+  <div style="margin-top:16px;font-size:0.42rem;letter-spacing:3px;color:#0d0d1f;">
+    <a href="https://oliveryvo-cmd.github.io/kidrising-platform/" style="color:#1a1a33;text-decoration:none;">KIDFOREVER PLATFORM</a>
+  </div>
+</footer>
+
+<script>
+// BG
+const bgc=document.getElementById('bg'),bgx=bgc.getContext('2d');let t=0;
+function drawBG(){
+  bgc.width=innerWidth;bgc.height=innerHeight;
+  bgx.fillStyle='#03020a';bgx.fillRect(0,0,bgc.width,bgc.height);
+  for(let i=0;i<150;i++){
+    const x=(i*137.5+t*0.02)%bgc.width,y=(i*89.3+t*0.01)%bgc.height;
+    bgx.globalAlpha=(Math.sin(t*0.015+i)*0.5+0.5)*0.3;
+    bgx.fillStyle=i%4===0?'#ffcc00':i%4===1?'#ff2244':i%4===2?'#bb33ff':'#fff';
+    bgx.beginPath();bgx.arc(x,y,0.8,0,Math.PI*2);bgx.fill();
+  }
+  bgx.globalAlpha=1;t++;requestAnimationFrame(drawBG);
+}
+drawBG();
+
+function playSong(){
+  alert('🎵 "Unstoppable Now" by Oliver\n\nComing soon to Spotify, Apple Music and everywhere else.\n\nFollow Oliver to be the first to hear it!');
+}
+</script>
+</body>
+</html>
