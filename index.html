@@ -189,8 +189,13 @@ function drawBG(){
 }
 drawBG();
 
+let audio=null;
 function playSong(){
-  alert('🎵 "Unstoppable Now" by Oliver\n\nComing soon to Spotify, Apple Music and everywhere else.\n\nFollow Oliver to be the first to hear it!');
+  const btn=document.querySelector('.play-btn');
+  if(audio&&!audio.paused){audio.pause();btn.textContent='▶';return;}
+  if(!audio){audio=new Audio('unstoppable-now.m4a');}
+  audio.play();btn.textContent='⏸';
+  audio.onended=()=>btn.textContent='▶';
 }
 </script>
 </body>
